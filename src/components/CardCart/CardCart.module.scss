@@ -1,0 +1,66 @@
+.cartItem{
+    margin: 95px auto 0 auto;
+    background-color: rgba(31, 31, 31, 1);
+    padding: 0px 30px 0px 0px;
+    display: flex;
+    align-items: flex-start;
+
+    .itemName, .size{
+      width: 15%;
+      margin: auto;
+
+      letter-spacing: 4px;
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 30px;
+
+      text-align: center;
+      letter-spacing: 0.25em;
+
+      color: #E7E7E7;
+    }
+
+    .size {
+      margin: auto 50px;
+      width: 5%;
+    }
+
+    .priceCount, .totalPrice{
+      width: 20%;
+      margin: auto 0;
+
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 30px;
+      
+      text-align: center;
+
+      color: #E7E7E7;
+    }
+
+    .deleteItem{
+      margin: auto 10px auto 35px;
+      cursor: pointer;
+
+      transition: background-color 0.35s ease;
+
+      &:hover {
+        background-color: rgb(142, 142, 142);
+      }
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    .vl {
+      border-left: 6px solid #181818;
+      height: 114px;
+      margin: 20px 0 20px 0;
+      border-radius: 100px;
+    }
+}

@@ -1,3 +1,12 @@
+import CardProducts from '../components/CardProducts'
+
+// Массив товаров взять из БД (когда же она уже появится...)
+const items = [
+    { title: "turtleneck (BLACK)", price: 2700, imgURL: "/img/turtleneck(BLACK).png"},
+    { title: "bomber jacket (SPRING)", price: 4900, imgURL: "/img/bomber_jacket(SPRING).png"},
+];
+
+//Используем map т.к. он автоматически преобразует в реакт компонент
 function Products() {
     return (
         <div>
@@ -10,100 +19,15 @@ function Products() {
                 <p className={"new"}>sales</p>
             </div>
             <div className="d-flex">
-                <div className="card d-flex">
-                    <img
-                    width={320}
-                    height={360}
-                    alt="turtleneckBlack"
-                    className={"turtleneckBlack"}
-                    src="/img/turtleneck(BLACK).png"
-                    />
-                    <div className={"MiniDecription align-center d-flex"}>
-                        <p className={"viewThis"}>view this &gt;</p>
-                        <div>
-                            <p className={"name"}>turtleneck (BLACK)</p>
-                        </div>
-                        <div className="d-flex justify-between">
-                            <p className={"price"}>2 700 ₽</p>
-                            <select className="size">
-                                <option>S(44)</option>
-                                <option>M(46)</option>
-                                <option>L(48)</option>
-                                <option>XL(50)</option>
-                                <option>XXL(52)</option>
-                            </select>
-                        </div>
-                        <div className={"flexWrapper"}>
-                            <button className={"buyButton cu-p"}>
-                                <p className={"addToCart"}>add to cart</p>
-                            </button>
-                            <img alt="like" src={"/img/Like.svg"} className="like cu-p"/>
-                        </div>
-                    </div>
-                </div>
-                <div className="card d-flex">
-                    <img
-                    width={320}
-                    height={360}
-                    alt="turtleneckBlack"
-                    className={"turtleneckBlack"}
-                    src="/img/turtleneck(BLACK).png"
-                    />
-                    <div className={"MiniDecription align-center d-flex"}>
-                        <p className={"viewThis"}>view this &gt;</p>
-                        <div>
-                            <p className={"name"}>turtleneck (BLACK)</p>
-                        </div>
-                        <div className="d-flex justify-between">
-                            <p className={"price"}>2 700 ₽</p>
-                            <select className="size">
-                                <option>S(44)</option>
-                                <option>M(46)</option>
-                                <option>L(48)</option>
-                                <option>XL(50)</option>
-                                <option>XXL(52)</option>
-                            </select>
-                        </div>
-                        <div className={"flexWrapper"}>
-                            <button className={"buyButton cu-p"}>
-                                <p className={"addToCart"}>add to cart</p>
-                            </button>
-                            <img alt="like" src={"/img/Like.svg"} className="like cu-p"/>
-                        </div>
-                    </div>
-                </div>
+                {items.map((obj) => (
+                    <CardProducts 
+                    title={obj.title} 
+                    price={new Intl.NumberFormat('ru-RU').format(obj.price)} 
+                    imgURL={obj.imgURL}
+                    onClick={() => console.log(obj)}
+                /> 
+                ))}
             </div>
-            <div className="card d-flex">
-                    <img
-                    width={320}
-                    height={360}
-                    alt="turtleneckBlack"
-                    className={"turtleneckBlack"}
-                    src="/img/turtleneck(BLACK).png"
-                    />
-                    <div className={"MiniDecription align-center d-flex"}>
-                        <p className={"viewThis"}>view this &gt;</p>
-                        <div>
-                            <p className={"name"}>turtleneck (BLACK)</p>
-                        </div>
-                        <div className="d-flex justify-between">
-                            <p className={"price"}>2 700 ₽</p>
-                            <select className="size">
-                                <option>S(44)</option>
-                                <option>M(46)</option>
-                                <option>L(48)</option>
-                                <option>XL(50)</option>
-                                <option>XXL(52)</option>
-                            </select>
-                        </div>
-                        <div className={"flexWrapper"}>
-                            <button className={"buyButton cu-p"}>
-                                <p className={"addToCart"}>add to cart</p>
-                            </button>
-                            <img alt="like" src={"/img/Like.svg"} className="like cu-p"/>
-                        </div>
-                    </div>
-                </div>
         </div>
     );
 }

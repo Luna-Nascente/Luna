@@ -1,4 +1,11 @@
 import { Link } from 'react-router-dom';
+import CardCart from '../components/CardCart';
+
+// Массив товаров взять из БД (когда же она уже появится...)
+const items = [
+    { title: "turtleneck (BLACK)", size: "L", price: 2700, count: 1, imgURL: "/img/turtleneck(BLACK).png"},
+    { title: "bomber jacket (SPRING)", size: "S", price: 4900, count: 2, imgURL: "/img/bomber_jacket(SPRING).png"},
+];
 
 function Cart() {
     return (
@@ -10,56 +17,30 @@ function Cart() {
                 </div>
             </Link>
             <h1>CART</h1>
-            <div className='cartItem'>
-                <img width={137} height={154} src="/img/turtleneck(BLACK).png"/>
-                <div className='itemName'>
-                    <p>turtleneck</p>
-                    <p>(BLACK)</p>
-                </div>
-                <div class="vl"/>
-                <div className='d-flex size'> 
-                    <p>size:</p>
-                    <p className='ml-5'>L</p>
-                </div>
-                <div class="vl"/>
-                <p className='priceCount'>2 700 ₽ x 1</p>
-                <div class="vl"/>
-                <p className='totalPrice'>2 700 ₽</p>
-                <div class="vl"/>
-                <img className='deleteItem cu-p' src="/img/delete_item.svg"/>
-            </div>
-            <div className='cartItem'>
-                <img width={137} height={154} src="/img/turtleneck(BLACK).png"/>
-                <div className='itemName'>
-                    <p>turtleneck</p>
-                    <p>(BLACK)</p>
-                </div>
-                <div class="vl"/>
-                <div className='d-flex size'> 
-                    <p>size:</p>
-                    <p className='ml-5'>L</p>
-                </div>
-                <div class="vl"/>
-                <p className='priceCount'>2 700 ₽ x 1</p>
-                <div class="vl"/>
-                <p className='totalPrice'>2 700 ₽</p>
-                <div class="vl"/>
-                <img className='deleteItem cu-p' src="/img/delete_item.svg"/>
-            </div>
+            {items.map((obj) => (
+                    <CardCart 
+                    title={obj.title} 
+                    size={obj.size}
+                    count={obj.count}
+                    price={new Intl.NumberFormat('ru-RU').format(obj.price)} 
+                    total={new Intl.NumberFormat('ru-RU').format(obj.price * obj.count)}
+                    imgURL={obj.imgURL}
+                /> 
+                ))}
             
             <div className='totalPriceCount d-flex'>
                 <p>Total:</p>
                 <p>5400 ₽</p>
             </div>
 
-            <Link>
+            <Link to="/order">
                 <button className="contact cu-p">
                     Place an order
                 </button>
             </Link>
 
             {/* <div className="cartIsEmpty">
-                <img src="/img/cartIsEmpty.png"/>
+                <img alt="cartIsEmpty" src="/img/cartIsEmpty.png"/>
                 <p>Your shopping cart is empty</p>
             </div> */}
         </div>
