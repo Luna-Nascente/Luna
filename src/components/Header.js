@@ -2,12 +2,16 @@ import {
     Route, Routes, Link
 } from 'react-router-dom';
 
-import Home from "../pages/Home.jsx";
-import Products from "../pages/Products.jsx";
-import Cart from "../pages/Cart.jsx";
-import Policy from "../pages/Policy.jsx";
-import Order from '../pages/Order.jsx';
-
+import Home from '../pages/Home.jsx';
+import Products from '../pages/Products.jsx';
+import Cart from '../pages/Cart.jsx';
+import Policy from '../pages/Policy.jsx';
+import Order from '../pages/Order';
+import Favorites from '../pages/Favorites.jsx'
+// import Profile from '../pages/Profile'
+import About from '../pages/About'
+import Contacts from '../pages/Contacts'
+import Authorization from '../pages/Authorization';
 
 function Header(){
     return(
@@ -26,13 +30,13 @@ function Header(){
                     </Link>
                     </p>
                     <p>
-                    <Link to="/about">
-                        About
+                    <Link to="/contacts">
+                        Contact
                     </Link>
                     </p>
                     <p>
-                    <Link to="/contacts">
-                        Contact
+                    <Link to="/about">
+                        About
                     </Link>
                     </p>
                     <h1 className="text-uppercase">
@@ -72,6 +76,11 @@ function Header(){
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/policy" element={<Policy />} />
                 <Route path="/order" element={<Order />} />
+                <Route path="/favorites" element={<Favorites />} />
+                {/* <Route path="/profile" element={<Profile />} /> */}
+                <Route path="/profile" element={<Authorization />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contacts" element={<Contacts />} />
             </Routes>
         </div>
     );

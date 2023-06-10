@@ -1,0 +1,46 @@
+.about_us {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 30px;
+
+  max-width: 1100px;
+  margin: 50px auto;
+  display: flex;
+  justify-content: space-between;
+  color:rgb(224, 224, 224);
+
+  &__content {
+    width: 50%;
+    padding-right: 2rem;
+
+    &__title {
+      font-size: 1.8rem;
+      text-align: left;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    &__description {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      color: #666;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__image_container {
+    width: 40%;
+    margin: 125px auto;
+
+    &__image {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

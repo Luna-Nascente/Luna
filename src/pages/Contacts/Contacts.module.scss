@@ -1,0 +1,41 @@
+.contact {
+    .contact_page {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 50px;
+
+        h2 {
+            margin-bottom: 30px;
+
+            font-family: 'Roboto Mono';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 36px;
+            color:#ccc;
+        }
+
+        .contact_info {
+            width: 50%;
+
+            p {
+                margin-bottom: 10px;
+
+                font-family: 'Roboto Mono';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                color:#ccc;
+            }
+
+            .map_container {
+                height: 400px;
+                border-radius: 5px;
+                border: 1px solid #d8d8d8;
+                overflow: hidden;
+                margin-top: 20px;
+            }
+        }
+    }
+}

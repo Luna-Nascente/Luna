@@ -1,0 +1,117 @@
+.order{
+  h1 {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 30px;
+    margin: 50px 0 50px 10px;
+    
+
+    color: #FFFFFF;
+  }
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    color:#ccc;
+  }
+  input[type="text"], input[type="tel"], input[type="email"], input[type="date"], input[type="payment"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+  }
+  select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+  }
+  textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+  }
+  .left_col {
+    width: 40%;
+    float: left;
+  }
+  .right_col {
+    width: 50%;
+    float: right;
+  }
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .order_summary {
+    margin-top: 30px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color:#ccc;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    color: #ccc;
+  }
+  th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+    color:#000000;
+  }
+  .submit{
+    background: #000000;
+
+    height: 60px;
+    width: 400px;
+    font-family: "Roboto Mono";
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    align-items: center;
+    text-align: center;
+
+    display: block;
+    margin-left: auto;
+    margin: 90px auto 0 auto;
+
+    color: #c1c1c1;
+
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: #c1c1c1;
+      color: #000000;
+    }
+  }
+}

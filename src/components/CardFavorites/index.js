@@ -1,19 +1,17 @@
 import React from 'react'
-import axios from 'axios';
-import styles from './CardProducts.module.scss'
+import styles from './CardFavorites.module.scss'
 import QuantityButton from '../QuantityButton';
 
-function CardProducts({title, price, size, imgURL, onFavorite, onClickBuy, favorite, onRemove}){
-    const [quantity, setQuantity] = React.useState(1); 
-    const [isFavorite, setIsFavorite] = React.useState(favorite);
+function CardFavorites({title, price, size, imgURL, onFavorite, onClickBuy, favorite, onRemove}){
+    const [quantity, setQuantity] = React.useState(1); // здесь храним количество выбранных товаров
+    const [isFavorite, setIsFavorite] = React.useState(true);
 
     const onClickFavorite = () => {
         if(isFavorite === false){
-            onFavorite({title, price, size, imgURL, favorite: true});
+            onFavorite({title, price, size, imgURL, favorite: false});
             setIsFavorite(!isFavorite);
         } else {
             onRemove();
-            setIsFavorite(!isFavorite);
         }
     };
 
@@ -21,32 +19,19 @@ function CardProducts({title, price, size, imgURL, onFavorite, onClickBuy, favor
         setQuantity(newQuantity);
       };
   
-      const onAddToCart = () => {
-        if (quantity > 0) {
-          const newItem = {
-            title: title,
-            size: document.querySelector(`.${styles.size}`).value,
-            price: price,
-            count: quantity
-          };
-          axios.post('https://647b1df4d2e5b6101db0e241.mockapi.io/cart', newItem);
-          setQuantity(0);
-        }
-      };
-
       const handleAddToCart = () => {
         if(quantity > 0) {
-          onAddToCart();
+          // добавить товар в корзину
         }
       };
 
     return (
         <div className={styles.card}>
             <img
-            width={320}
-            height={360}
-            alt={title}
-            src={imgURL}
+                width={320}
+                height={360}
+                alt={title}
+                src={imgURL}
             />
             <div className={styles.MiniDecription}>
                 <p className={styles.viewThis}>view this &gt;</p>
@@ -73,7 +58,7 @@ function CardProducts({title, price, size, imgURL, onFavorite, onClickBuy, favor
                             <img 
                                 alt="like" 
                                 src={isFavorite ? "/img/Like(clicked).svg" : "/img/Like.svg"} 
-                                onClick={onClickFavorite}
+                                onClick={onClickFavorite} 
                                 className={styles.like}
                             />
                         </div>
@@ -84,4 +69,4 @@ function CardProducts({title, price, size, imgURL, onFavorite, onClickBuy, favor
     );
 }
 
-export default CardProducts;
+export default CardFavorites;

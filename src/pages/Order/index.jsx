@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './Order.module.scss';
 
 // Массив товаров взять из БД (когда же она уже появится...)
 const items = [
@@ -21,12 +22,12 @@ function Order() {
     // }
 
     return(
-        <div className="order">
+        <div className={styles.order}>
             <h1>Оформление заказа</h1>
 
             {/* method: post */}
             <form action=""> 
-                <div class="left-col">
+                <div class={styles.left_col}>
                     <label for="name">Ваше имя:</label>
                     <input type="text" name="name" id="name" required/>
 
@@ -67,7 +68,7 @@ function Order() {
 
                     <label for="consent"><input type="checkbox" name="consent" id="consent" required/> Я согласен на обработку персональных данных</label>
                 </div>
-                <div class="right-col">
+                <div class={styles.right_col}>
 			        <table>
 				        <thead>
 					        <tr>
@@ -87,16 +88,16 @@ function Order() {
                         </tbody>
                     </table>
 
-                    <div class="order-summary">
+                    <div className={styles.order_summary}>
                         <p>Сумма по товарам: <strong>3500 руб.</strong></p>
                         <p>Стоимость доставки: <strong>300 руб.</strong></p>
                         <p>Итого: <strong>3800 руб.</strong></p>
                     </div>
                 </div>
 
-                <div class="clearfix"></div>
+                <div class={styles.clearfix}></div>
 
-                <button type="submit" className="submit">Оформить заказ</button>
+                <button type="submit" className={styles.submit}>Оформить заказ</button>
             </form>
         </div>
     );

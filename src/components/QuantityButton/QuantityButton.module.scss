@@ -1,0 +1,29 @@
+.quantityButton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 150px;
+    margin-bottom: 5px;
+  
+    button {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #14171c; /* основной цвет фона */
+      color: #ffffff;
+      font-size: 18px;
+      cursor: pointer;
+  
+      transition: background-color 0.3s ease;
+    }
+  
+    span {
+      font-size: 16px;
+      font-weight: bold;
+      color: #14171c;
+    }
+    
+    button:hover {
+      background-color: #2f3237; /* цвет фона при наведении */
+    }
+  }
