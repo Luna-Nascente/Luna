@@ -1,6 +1,8 @@
+import React from "react";
 import { 
     Route, Routes, Link
 } from 'react-router-dom';
+import axios from "axios";
 
 import Home from '../pages/Home.jsx';
 import Products from '../pages/Products.jsx';
@@ -14,6 +16,33 @@ import Contacts from '../pages/Contacts'
 import Authorization from '../pages/Authorization';
 
 function Header(){
+    const [countOfGoods, setCountOfGoods] = React.useState(0);
+
+    React.useEffect(() => {
+        // Определяем функцию для обновления количества товаров в корзине
+        const updateCartItemCount = () => {
+          axios
+            .get("https://647b1df4d2e5b6101db0e241.mockapi.io/cart")
+            .then((response) => {
+              setCountOfGoods(response.data.length);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        };
+
+     // Вызываем функцию для первоначальной установки значения
+     updateCartItemCount();
+
+     // Зарегистрируем слушатель событий изменения корзины и вызываем функцию обновления количества товаров
+     window.addEventListener('cartUpdate', updateCartItemCount);
+ 
+     // Очистим слушатель при размонтировании компонента
+     return () => {
+       window.removeEventListener('cartUpdate', updateCartItemCount);
+     };
+    }, []);
+
     return(
         <div className='header'>
             <header className="mb-10 d-flex justify-between align-center"> 
@@ -59,7 +88,7 @@ function Header(){
                     <Link className="d-flex align-center" to="/cart">
                     <img width={23.75} height={20} src="/img/BuyCart.svg" alt="Buy"/>
                     <div>
-                        <p className="countOfGoods">99+</p>
+                        <p className="countOfGoods">{countOfGoods}</p>
                     </div>
                     </Link>
                 </li>

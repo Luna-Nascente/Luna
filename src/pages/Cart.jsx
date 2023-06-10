@@ -1,58 +1,72 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CardCart from '../components/CardCart';
-
-// Массив товаров взять из БД (когда же она уже появится...)
-const items = [
-    { title: "turtleneck (BLACK)", size: "L", price: 2700, count: 1, imgURL: "/img/turtleneck_(BLACK).png"},
-    { title: "bomber jacket (SPRING)", size: "S", price: 4900, count: 2, imgURL: "/img/bomber_jacket_(SPRING).png"},
-];
+import axios from 'axios';
 
 function Cart() {
+  const [cartItems, setCartItems] = useState([]);
 
-    const total = items.reduce((acc, item) => acc + item.price * item.count, 0);
-    return (
-        <div className="cart">
-            <Link to="/products">
-                <div className="backToShop d-flex align-center">
-                    <img alt="arrowLeft" src="/img/ArrowLeft.svg"/>
-                    <p>Back to shopping</p>
-                </div>
-            </Link>
-            <h1>CART</h1>
-            {items.length > 0 ? (
-                <div>
-                    {items.map((obj) => (
-                    <CardCart 
-                        title={obj.title} 
-                        size={obj.size}
-                        count={obj.count}
-                        price={new Intl.NumberFormat('ru-RU').format(obj.price)} 
-                        total={new Intl.NumberFormat('ru-RU').format(obj.price * obj.count)}
-                        imgURL={obj.imgURL}
-                    /> 
-                    ))}
-                
-                    <div className='totalPriceCount d-flex'>
-                        <p>Total:</p>
-                        <p>{new Intl.NumberFormat('ru-RU').format(total)} ₽</p>
-                    </div>
+  useEffect(() => {
+    axios.get('https://647b1df4d2e5b6101db0e241.mockapi.io/cart')
+      .then((response) => setCartItems(response.data))
+      .catch((error) => console.log(error));
+  }, []);
 
-                    <Link to="/order">
-                        <button className="contact cu-p">
-                            Place an order
-                        </button>
-                    </Link>
-                </div>
-                ) : (
+  const handleItemDelete = (id) => {
+    const updatedCartItems = cartItems.map(item =>
+      item.id === id
+        ? { ...item, count: item.count - item.count }
+        : item
+    ).filter(item => item.count > 0);
+    setCartItems(updatedCartItems);
+  };
 
-                <div className="cartIsEmpty">
-                    <img alt="cartIsEmpty" src="/img/cartIsEmpty.png"/>
-                    <p>Your shopping cart is empty</p>
-                </div>
-                )
-            }
+  // Calculate total price
+  const total = cartItems.reduce((acc, item) => acc + item.price * item.count, 0);
+
+  return (
+    <div className="cart">
+      <Link to="/products">
+        <div className="backToShop d-flex align-center">
+          <img alt="arrowLeft" src="/img/ArrowLeft.svg" />
+          <p>Back to shopping</p>
         </div>
-    );
+      </Link>
+      <h1>CART</h1>
+      {cartItems.length > 0 ? (
+        <div>
+          {cartItems.map((obj, index) => (
+            <CardCart
+              key={index}
+              id={obj.id}
+              title={obj.title}
+              size={obj.size}
+              count={obj.count}
+              price={obj.price}
+              total={(obj.price * obj.count)}
+              imgURL={obj.imgURL}
+              cartItems={cartItems} 
+              onItemDelete={handleItemDelete}
+            />
+          ))}
+
+          <div className="totalPriceCount d-flex">
+            <p>Total:</p>
+            <p>{total} ₽</p>
+          </div>
+
+          <Link to="/order">
+            <button className="contact cu-p">Place an order</button>
+          </Link>
+        </div>
+      ) : (
+        <div className="cartIsEmpty">
+          <img alt="cartIsEmpty" src="/img/cartIsEmpty.png" />
+          <p>Your shopping cart is empty</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default Cart;

@@ -42,7 +42,7 @@ function Products() {
                         key={index}
                         id={item.id}
                         title={item.title} 
-                        price={Intl.NumberFormat('ru-RU').format(item.price)} 
+                        price={item.price} 
                         imgURL={item.imgURL}
                         onFavorite={(obj) => onAddToFavorite(obj)}
                         onClickBuy={() => console.log("Click on buy!")}

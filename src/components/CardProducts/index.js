@@ -3,13 +3,13 @@ import axios from 'axios';
 import styles from './CardProducts.module.scss'
 import QuantityButton from '../QuantityButton';
 
-function CardProducts({title, price, size, imgURL, onFavorite, onClickBuy, favorite, onRemove}){
-    const [quantity, setQuantity] = React.useState(1); 
+function CardProducts({id, title, price, size, imgURL, onFavorite, onClickBuy, favorite, onRemove}){
+    const [quantity, setQuantity] = React.useState(1);  //кол-во взять из бд, и перенести в родительский файл
     const [isFavorite, setIsFavorite] = React.useState(favorite);
 
     const onClickFavorite = () => {
         if(isFavorite === false){
-            onFavorite({title, price, size, imgURL, favorite: true});
+            onFavorite({id, title, price, size, imgURL, favorite: true});
             setIsFavorite(!isFavorite);
         } else {
             onRemove();
@@ -21,24 +21,47 @@ function CardProducts({title, price, size, imgURL, onFavorite, onClickBuy, favor
         setQuantity(newQuantity);
       };
   
-      const onAddToCart = () => {
+    const onAddToCart = () => {
         if (quantity > 0) {
           const newItem = {
+            id: id,
             title: title,
             size: document.querySelector(`.${styles.size}`).value,
             price: price,
-            count: quantity
+            count: quantity,
+            imgURL: imgURL
           };
-          axios.post('https://647b1df4d2e5b6101db0e241.mockapi.io/cart', newItem);
-          setQuantity(0);
+          
+          axios.get('https://647b1df4d2e5b6101db0e241.mockapi.io/cart')
+            .then(response => {
+              const cartItems = response.data;
+              const existingItemIndex = cartItems.findIndex(item => item.id === id);
+              
+              if(existingItemIndex > -1) {
+                // If item already exists in cart, increase the quantity of the existing item
+                const existingItem = cartItems[existingItemIndex];
+                const updatedItem = {
+                  ...existingItem,
+                  count: existingItem.count + quantity
+                };
+                
+                axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/cart/${existingItem.id}`, updatedItem);
+              } else {
+                // If item is not in cart, add new item to cart
+                axios.post('https://647b1df4d2e5b6101db0e241.mockapi.io/cart', newItem);
+              }
+            });
+          
+          setQuantity(1);
         }
       };
 
-      const handleAddToCart = () => {
+    const handleAddToCart = () => {
         if(quantity > 0) {
           onAddToCart();
         }
-      };
+        setQuantity(1);
+    };
 
     return (
         <div className={styles.card}>
