@@ -32,27 +32,28 @@ function Cart() {
           <p>Back to shopping</p>
         </div>
       </Link>
-      <h1>CART</h1>
+      <h1>Cart</h1>
       {cartItems.length > 0 ? (
         <div>
-          {cartItems.map((obj, index) => (
+          {cartItems.map((item) => (
             <CardCart
-              key={index}
-              id={obj.id}
-              title={obj.title}
-              size={obj.size}
-              count={obj.count}
-              price={obj.price}
-              total={(obj.price * obj.count)}
-              imgURL={obj.imgURL}
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              size={item.size}
+              count={item.count}
+              price={item.price}
+              total={(item.price * item.count)}
+              imgURL={item.imgURL}
               cartItems={cartItems} 
               onItemDelete={handleItemDelete}
+              favorite={item.favorite}
             />
           ))}
 
           <div className="totalPriceCount d-flex">
             <p>Total:</p>
-            <p>{total} ₽</p>
+            <p>{new Intl.NumberFormat('ru-RU').format(total)} ₽</p>
           </div>
 
           <Link to="/order">

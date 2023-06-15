@@ -1,4 +1,5 @@
 import CardFavorites from '../components/CardFavorites'
+import { Link } from 'react-router-dom';
 import React from 'react'
 import axios from 'axios'
 
@@ -21,19 +22,28 @@ function Favorites() {
     };
 
     return (
-        <div>
+        //ахтунг со стилями (стоит сортировать по папкам)
+        <div className='favoritesPage'>
+            <Link to="/products">
+                <div className="backToShop d-flex align-center">
+                <img alt="arrowLeft" src="/img/ArrowLeft.svg" />
+                <p>Back to shopping</p>
+                </div>
+            </Link>
+            <h1>Favourites</h1>
             <div className={"catalog"}>
-                <p className={"new"}>new</p>
-                <p className={"exclusiveCollection"}>exclusive collection</p>
-                <p className={"basicClothing"}>basic clothing</p>
-                <p className={"basicClothing"}>outerwear</p>
-                <p className={"exclusiveCollection"}> accessories</p>
-                <p className={"new"}>sales</p>
+                <p className={"cu-p"}>new</p>
+                <p className={"cu-p"}>exclusive collection</p>
+                <p className={"cu-p"}>basic clothing</p>
+                <p className={"cu-p"}>outerwear</p>
+                <p className={"cu-p"}> accessories</p>
+                <p className={"cu-p"}>sales</p>
             </div>
+            {favoriteItems.length > 0 ? (
             <div className="d-flex flex-wrap justify-between">
-                {favoriteItems.map((item, index) => (
+                {favoriteItems.map((item) => (
                     <CardFavorites 
-                        key={index}
+                        key={item.id}
                         id={item.id}
                         title={item.title} 
                         size={item.size}
@@ -42,10 +52,16 @@ function Favorites() {
                         onFavorite={(obj) => onAddToFavorite(obj)}
                         onClickBuy={() => console.log("Click on buy!")}
                         onRemove={() => onRemoveFavorite(item.id)}
-                        favorite={item.Favorites}
+                        favorite={!item.favorites}
                     /> 
                 ))}
             </div>
+            ) : (
+                <div className="favoritesIsEmpty">
+                  <img alt="favoritesIsEmpty" src="/img/favoritesIsEmpty.svg" />
+                  <p>You don't have any favorites yet</p>
+                </div>
+            )}
         </div>
     );
 }

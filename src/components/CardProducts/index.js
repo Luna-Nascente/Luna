@@ -3,30 +3,40 @@ import axios from 'axios';
 import styles from './CardProducts.module.scss'
 import QuantityButton from '../QuantityButton';
 
-function CardProducts({id, title, price, size, imgURL, onFavorite, onClickBuy, favorite, onRemove}){
+function CardProducts({key, id, title, price, size, imgURL, onFavorite, onClickBuy, favorite, onRemove}){
     const [quantity, setQuantity] = React.useState(1);  //кол-во взять из бд, и перенести в родительский файл
     const [isFavorite, setIsFavorite] = React.useState(favorite);
+    const [selectedSize, setSelectedSize] = React.useState('S(44)');
 
     const onClickFavorite = () => {
-        if(isFavorite === false){
-            onFavorite({id, title, price, size, imgURL, favorite: true});
-            setIsFavorite(!isFavorite);
+        const updatedFavorite = !isFavorite;
+        setIsFavorite(updatedFavorite);
+        if (updatedFavorite) {
+            onFavorite({
+                key,
+                id: id, 
+                title, 
+                price, 
+                size, 
+                imgURL, 
+                favorite: true});
         } else {
-            onRemove();
-            setIsFavorite(!isFavorite);
+            onRemove(key);
         }
+        axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/products/${id}`, {favorite: updatedFavorite})
     };
 
     const handleQuantityChange = (newQuantity) => {
         setQuantity(newQuantity);
-      };
+    };
   
     const onAddToCart = () => {
         if (quantity > 0) {
           const newItem = {
+            key,
             id: id,
             title: title,
-            size: document.querySelector(`.${styles.size}`).value,
+            size: selectedSize,
             price: price,
             count: quantity,
             imgURL: imgURL
@@ -34,27 +44,26 @@ function CardProducts({id, title, price, size, imgURL, onFavorite, onClickBuy, f
           
           axios.get('https://647b1df4d2e5b6101db0e241.mockapi.io/cart')
             .then(response => {
-              const cartItems = response.data;
-              const existingItemIndex = cartItems.findIndex(item => item.id === id);
-              
-              if(existingItemIndex > -1) {
-                // If item already exists in cart, increase the quantity of the existing item
-                const existingItem = cartItems[existingItemIndex];
+                const cartItems = response.data;
+                const existingItem = cartItems.find(item => Number(item.id) === Number(id) && item.size === newItem.size);
+
+                if (existingItem) {
+                // If item already exists in cart with the same size, increase the quantity of the existing item
                 const updatedItem = {
-                  ...existingItem,
-                  count: existingItem.count + quantity
+                    ...existingItem,
+                    count: existingItem.count + quantity
                 };
-                
+
                 axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/cart/${existingItem.id}`, updatedItem);
-              } else {
-                // If item is not in cart, add new item to cart
+                } else {
+                // If item is not in cart or has a different size, add new item to cart
                 axios.post('https://647b1df4d2e5b6101db0e241.mockapi.io/cart', newItem);
-              }
+                }
             });
           
           setQuantity(1);
         }
-      };
+    };
 
     const handleAddToCart = () => {
         if(quantity > 0) {
@@ -77,8 +86,8 @@ function CardProducts({id, title, price, size, imgURL, onFavorite, onClickBuy, f
                     <p className={styles.name}>{title}</p>
                     <div className={styles.info}>
                         <div className="d-flex justify-between">
-                            <p className={styles.price}>{price} ₽</p>
-                                <select className={styles.size}>
+                            <p className={styles.price}> {new Intl.NumberFormat('ru-RU').format(price)} ₽</p>
+                                <select className={styles.size} onChange={(event) => setSelectedSize(event.target.value)}>
                                     <option>S(44)</option>
                                     <option>M(46)</option>
                                     <option>L(48)</option>

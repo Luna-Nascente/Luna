@@ -6,7 +6,7 @@ const Contacts = () => (
     <div className={styles.contact_page}>
       <div className={styles.contact_info}>
         <h2>Contact Information</h2>
-        <p><strong>Owner:</strong> Plaksin Artem</p>
+        <p><strong>Owner:</strong> ООО "Luna Nascente Group"</p>
         <p><strong>Email:</strong> mr.2003.artem@gmail.com</p>
         <p><strong>Phone:</strong> +7 (977) 735-84-00</p>
         <br/>
@@ -26,7 +26,6 @@ const Contacts = () => (
             src="https://yandex.ru/map-widget/v1/?ll=37.625991%2C55.737745&mode=usermaps&source=constructorLink&um=constructor%3A356c8912742b5c79e431ac84e051c04f425dab95fb0d2843cab7a960b0a8a81c&z=11"
             width="560"
             height="560"
-            frameBorder="0"
             allowFullScreen={true}
             style={{ position: 'relative' }}>
           </iframe>

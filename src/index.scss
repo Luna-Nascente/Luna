@@ -170,7 +170,7 @@ body {
 
 .catalog {
   background-color: #D9D9D9;
-  width: 1320px;
+  width: auto;
   padding: 5px 125px 5px 125px;
   display: flex;
   align-items: center;
@@ -345,6 +345,102 @@ body {
 
     p {
       margin: 10px auto 10px auto;
+    }
+  }
+}
+
+// favorites
+
+.favoritesPage {
+  
+  .backToShop {
+    p {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 30px;
+      /* or 125% */
+      display: flex;
+      align-items: center;
+      text-align: center;
+      text-decoration-line: underline;
+      margin-left: 15px;
+
+      color: #FFFFFF;
+    }
+  }
+
+  .backToHome {
+    p {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 30px;
+      /* or 125% */
+      align-items: center;
+      text-align: center;
+      text-decoration-line: underline;
+      margin-left: 15px;
+
+      color: #FFFFFF;
+    }
+  }
+  h1 {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 30px;
+    margin: 50px 0 50px 10px;
+    
+
+    color: #FFFFFF;
+  }
+
+  .catalog {
+    background-color: #D9D9D9;
+    width: auto;
+    padding: 5px 125px 5px 125px;
+    display: flex;
+    align-items: center;
+  
+    p {
+      height: 32px;
+      font-family: "Roboto Serif";
+      font-size: 18px;
+      line-height: 30px;
+      color: #000000;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      text-decoration: underline;
+      margin-right: 20px;
+  
+      &:not(:last-of-type) {
+        margin-right: 80px;
+      }
+    }
+  }
+
+  .favoritesIsEmpty{
+    margin-top: 125px;
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+
+    color: #FFFFFF;
+    
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    p {
+      text-align: center;
     }
   }
 }

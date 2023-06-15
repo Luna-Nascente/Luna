@@ -3,17 +3,16 @@ import axios from 'axios';
 import styles from './CardFavorites.module.scss'
 import QuantityButton from '../QuantityButton';
 
-function CardFavorites({id, title, price, size, imgURL, onFavorite, onClickBuy, favorite, onRemove}){
+function CardFavorites({id, title, price, size, imgURL, onClickBuy, favorite, onRemove}){
     const [quantity, setQuantity] = React.useState(1); // здесь храним количество выбранных товаров
-    const [isFavorite, setIsFavorite] = React.useState(true);
+    const [selectedSize, setSelectedSize] = React.useState(size);
+    
 
     const onClickFavorite = () => {
-        if(isFavorite === false){
-            onFavorite({id, title, price, size, imgURL, favorite: false});
-            setIsFavorite(!isFavorite);
-        } else {
-            onRemove();
+        if(favorite === true){
+            onRemove(id);
         }
+        axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/products/${id}`, {favorite: false})
     };
 
     const handleQuantityChange = (newQuantity) => {
@@ -25,7 +24,7 @@ function CardFavorites({id, title, price, size, imgURL, onFavorite, onClickBuy, 
           const newItem = {
             id: id,
             title: title,
-            size: document.querySelector(`.${styles.size}`).value,
+            size: selectedSize,
             price: price,
             count: quantity,
             imgURL: imgURL
@@ -33,22 +32,21 @@ function CardFavorites({id, title, price, size, imgURL, onFavorite, onClickBuy, 
           
           axios.get('https://647b1df4d2e5b6101db0e241.mockapi.io/cart')
             .then(response => {
-              const cartItems = response.data;
-              const existingItemIndex = cartItems.findIndex(item => item.id === id);
-              
-              if(existingItemIndex > -1) {
-                // If item already exists in cart, increase the quantity of the existing item
-                const existingItem = cartItems[existingItemIndex];
+                const cartItems = response.data;
+                const existingItem = cartItems.find(item => item.id === id && item.size === newItem.size);
+
+                if (existingItem) {
+                // If item already exists in cart with the same size, increase the quantity of the existing item
                 const updatedItem = {
-                  ...existingItem,
-                  count: existingItem.count + quantity
+                    ...existingItem,
+                    count: existingItem.count + quantity
                 };
-                
+
                 axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/cart/${existingItem.id}`, updatedItem);
-              } else {
-                // If item is not in cart, add new item to cart
+                } else {
+                // If item is not in cart or has a different size, add new item to cart
                 axios.post('https://647b1df4d2e5b6101db0e241.mockapi.io/cart', newItem);
-              }
+                }
             });
           
           setQuantity(1);
@@ -59,6 +57,7 @@ function CardFavorites({id, title, price, size, imgURL, onFavorite, onClickBuy, 
         if(quantity > 0) {
           onAddToCart();
         }
+        setQuantity(1);
     };
 
     return (
@@ -75,8 +74,8 @@ function CardFavorites({id, title, price, size, imgURL, onFavorite, onClickBuy, 
                     <p className={styles.name}>{title}</p>
                     <div className={styles.info}>
                         <div className="d-flex justify-between">
-                            <p className={styles.price}>{price} ₽</p>
-                                <select className={styles.size}>
+                            <p className={styles.price}>{new Intl.NumberFormat('ru-RU').format(price)} ₽</p>
+                                <select className={styles.size} onChange={(event) => setSelectedSize(event.target.value)}>
                                     <option>S(44)</option>
                                     <option>M(46)</option>
                                     <option>L(48)</option>
@@ -93,7 +92,7 @@ function CardFavorites({id, title, price, size, imgURL, onFavorite, onClickBuy, 
                             </div>
                             <img 
                                 alt="like" 
-                                src={isFavorite ? "/img/Like(clicked).svg" : "/img/Like.svg"} 
+                                src={favorite ? "/img/Like(clicked).svg" : "/img/Like.svg"} 
                                 onClick={onClickFavorite} 
                                 className={styles.like}
                             />
