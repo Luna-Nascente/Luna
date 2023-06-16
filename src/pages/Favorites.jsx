@@ -12,13 +12,15 @@ function Favorites() {
             setFavoriteItems(res.data);
         })
     }, []);
+
     const onAddToFavorite = (obj) => {
         axios.post('https://647b1df4d2e5b6101db0e241.mockapi.io/favorites', obj);
         setFavoriteItems((prev) => [...prev, obj]);
     };
-    const onRemoveFavorite = (id) => {
-        axios.delete(`https://647b1df4d2e5b6101db0e241.mockapi.io/favorites/${id}`);
-        setFavoriteItems((prev) => prev.filter((item) => item.id !== id));
+    
+    const onRemoveFavorite = (product_id) => {
+        axios.delete(`https://647b1df4d2e5b6101db0e241.mockapi.io/favorites/${product_id}`);
+        setFavoriteItems((prev) => prev.filter((item) => item.product_id !== product_id));
     };
 
     return (
@@ -31,27 +33,19 @@ function Favorites() {
                 </div>
             </Link>
             <h1>Favourites</h1>
-            <div className={"catalog"}>
-                <p className={"cu-p"}>new</p>
-                <p className={"cu-p"}>exclusive collection</p>
-                <p className={"cu-p"}>basic clothing</p>
-                <p className={"cu-p"}>outerwear</p>
-                <p className={"cu-p"}> accessories</p>
-                <p className={"cu-p"}>sales</p>
-            </div>
             {favoriteItems.length > 0 ? (
             <div className="d-flex flex-wrap justify-between">
                 {favoriteItems.map((item) => (
                     <CardFavorites 
-                        key={item.id}
-                        id={item.id}
-                        title={item.title} 
-                        size={item.size}
-                        price={item.price} 
-                        imgURL={item.imgURL}
+                        key={item.product_id}
+                        product_id={item.product_id}
+                        product_name={item.product_name} 
+                        product_size={item.product_size}
+                        product_price={item.product_price} 
+                        product_image={item.product_image}
                         onFavorite={(obj) => onAddToFavorite(obj)}
                         onClickBuy={() => console.log("Click on buy!")}
-                        onRemove={() => onRemoveFavorite(item.id)}
+                        onRemove={() => onRemoveFavorite(item.product_id)}
                         favorite={!item.favorites}
                     /> 
                 ))}

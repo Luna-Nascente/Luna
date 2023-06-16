@@ -10,7 +10,7 @@ import Cart from '../pages/Cart.jsx';
 import Policy from '../pages/Policy.jsx';
 import Order from '../pages/Order';
 import Favorites from '../pages/Favorites.jsx'
-// import Profile from '../pages/Profile'
+import Profile from '../pages/Profile'
 import About from '../pages/About'
 import Contacts from '../pages/Contacts'
 import Authorization from '../pages/Authorization';
@@ -92,7 +92,7 @@ function Header(){
                     </div>
                     </Link>
                 </li>
-                <Link to="/profile">
+                <Link to="/authorization">
                     <li>
                     <img width={32} height={32} src="/img/profile.svg" alt="Buy"/>
                     </li> 
@@ -106,8 +106,8 @@ function Header(){
                 <Route path="/policy" element={<Policy />} />
                 <Route path="/order" element={<Order />} />
                 <Route path="/favorites" element={<Favorites />} />
-                {/* <Route path="/profile" element={<Profile />} /> */}
-                <Route path="/profile" element={<Authorization />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/authorization" element={<Authorization />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contacts" element={<Contacts />} />
             </Routes>

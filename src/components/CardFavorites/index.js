@@ -3,16 +3,16 @@ import axios from 'axios';
 import styles from './CardFavorites.module.scss'
 import QuantityButton from '../QuantityButton';
 
-function CardFavorites({id, title, price, size, imgURL, onClickBuy, favorite, onRemove}){
+function CardFavorites({product_id, product_name, product_price, product_size, product_image, onClickBuy, favorite, onRemove}){
     const [quantity, setQuantity] = React.useState(1); // здесь храним количество выбранных товаров
-    const [selectedSize, setSelectedSize] = React.useState(size);
+    const [selectedSize, setSelectedSize] = React.useState(product_size);
     
 
     const onClickFavorite = () => {
         if(favorite === true){
-            onRemove(id);
+            onRemove(product_id);
         }
-        axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/products/${id}`, {favorite: false})
+        //axios.put(`https://localhost:7256/Products/${product_id}`, {favorite: false})
     };
 
     const handleQuantityChange = (newQuantity) => {
@@ -22,24 +22,24 @@ function CardFavorites({id, title, price, size, imgURL, onClickBuy, favorite, on
     const onAddToCart = () => {
         if (quantity > 0) {
           const newItem = {
-            id: id,
-            title: title,
-            size: selectedSize,
-            price: price,
-            count: quantity,
-            imgURL: imgURL
+            product_id: product_id,
+            product_name: product_name,
+            product_size: selectedSize,
+            product_price: product_price,
+            product_count: quantity,
+            product_image: product_image
           };
           
           axios.get('https://647b1df4d2e5b6101db0e241.mockapi.io/cart')
             .then(response => {
                 const cartItems = response.data;
-                const existingItem = cartItems.find(item => item.id === id && item.size === newItem.size);
+                const existingItem = cartItems.find(item => item.product_id === product_id && item.product_size === newItem.product_size);
 
                 if (existingItem) {
                 // If item already exists in cart with the same size, increase the quantity of the existing item
                 const updatedItem = {
                     ...existingItem,
-                    count: existingItem.count + quantity
+                    product_count: existingItem.product_count + quantity
                 };
 
                 axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/cart/${existingItem.id}`, updatedItem);
@@ -65,16 +65,16 @@ function CardFavorites({id, title, price, size, imgURL, onClickBuy, favorite, on
             <img
                 width={320}
                 height={360}
-                alt={title}
-                src={imgURL}
+                alt={product_name}
+                src={product_image}
             />
             <div className={styles.MiniDecription}>
                 <p className={styles.viewThis}>view this &gt;</p>
                 <div className="justify-between">
-                    <p className={styles.name}>{title}</p>
+                    <p className={styles.name}>{product_name}</p>
                     <div className={styles.info}>
                         <div className="d-flex justify-between">
-                            <p className={styles.price}>{new Intl.NumberFormat('ru-RU').format(price)} ₽</p>
+                            <p className={styles.price}>{new Intl.NumberFormat('ru-RU').format(product_price)} ₽</p>
                                 <select className={styles.size} onChange={(event) => setSelectedSize(event.target.value)}>
                                     <option>S(44)</option>
                                     <option>M(46)</option>

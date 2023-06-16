@@ -26,13 +26,13 @@ function Home(){
                     and other needs and provide its own version.</p>
                     <div className="d-flex mt-50">
                         <Link to="/contacts">
-                            <button className="contact cu-p" onClick={handleContactClick}>
-                            Contact
+                            <button className="cu-p" onClick={handleContactClick}>
+                                Contact
                             </button>
                         </Link>
                         <Link to="/about">
-                            <button className="about cu-p" onClick={handleAboutClick}>
-                            About us
+                            <button className="cu-p" onClick={handleAboutClick}>
+                                About us
                             </button>
                         </Link>
                     </div>

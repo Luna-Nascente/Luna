@@ -2,11 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styles from './Order.module.scss';
 import axios from 'axios';
 
-// const items = [
-//     { title: "turtleneck (BLACK)", size: "L", price: 2700, count: 1},
-//     { title: "bomber jacket (SPRING)", size: "S", price: 4900, count: 2},
-// ];
-
 function Order() {
     const [orderItems, setOrderItems] = useState([]);
     const [delivery, setDelivery] = useState(''); //выбор доставки пока не реализован
@@ -21,7 +16,7 @@ function Order() {
         setDelivery(event.target.value);
     }
 
-    const total = orderItems.reduce((acc, item) => acc + item.price * item.count, 0);
+    const total = orderItems.reduce((acc, item) => acc + item.product_price * item.product_count, 0);
     const deliveryPrice = 400;
 
     // function showCdekWidget() {
@@ -92,9 +87,9 @@ function Order() {
                         <tbody>
                             {orderItems.map((item) => (
                                 <tr>
-                                    <td>{item.title} ({item.size})</td>
-                                    <td>{item.count}</td>
-                                    <td>{new Intl.NumberFormat('ru-RU').format(item.price * item.count)} rub.</td>
+                                    <td>{item.product_name} ({item.product_size})</td>
+                                    <td>{item.product_count}</td>
+                                    <td>{new Intl.NumberFormat('ru-RU').format(item.product_price * item.product_count)} rub.</td>
                                 </tr>
                             ))}
                         </tbody>

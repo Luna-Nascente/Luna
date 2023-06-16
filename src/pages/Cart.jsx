@@ -12,17 +12,17 @@ function Cart() {
       .catch((error) => console.log(error));
   }, []);
 
-  const handleItemDelete = (id) => {
+  const handleItemDelete = (product_id) => {
     const updatedCartItems = cartItems.map(item =>
-      item.id === id
-        ? { ...item, count: item.count - item.count }
+      item.product_id === product_id
+        ? { ...item, product_count: item.product_count - item.product_count }
         : item
-    ).filter(item => item.count > 0);
+    ).filter(item => item.product_count > 0);
     setCartItems(updatedCartItems);
   };
 
   // Calculate total price
-  const total = cartItems.reduce((acc, item) => acc + item.price * item.count, 0);
+  const total = cartItems.reduce((acc, item) => acc + item.product_price * item.product_count, 0);
 
   return (
     <div className="cart">
@@ -37,14 +37,14 @@ function Cart() {
         <div>
           {cartItems.map((item) => (
             <CardCart
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              size={item.size}
-              count={item.count}
-              price={item.price}
-              total={(item.price * item.count)}
-              imgURL={item.imgURL}
+              key={item.product_id}
+              product_id={item.product_id}
+              product_name={item.product_name} 
+              product_size={item.product_size}
+              product_count={item.product_count}
+              product_price={item.product_price} 
+              total={(item.product_price * item.product_count)}
+              product_image={item.product_image}
               cartItems={cartItems} 
               onItemDelete={handleItemDelete}
               favorite={item.favorite}
