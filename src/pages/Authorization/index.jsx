@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-//import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './Authorization.module.scss';
+import Profile from '../../pages/Profile';
 
 function Authorization() {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,13 +11,30 @@ function Authorization() {
   const [client_address, setAddress] = useState('');
   const [client_birthday, setDob] = useState('');
   const [error, setError] = useState('');
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      setUserData(JSON.parse(userData));
+    }
+  }, []);
+
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await axios.get(`https://localhost:7256/Clients?id=${userId}`);
+      setUserData(response.data);
+    } catch (error) {
+      console.log(error);
+      setError('Failed to fetch user data');
+    }
+  };
 
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       if (!isLogin) {
-        // Создаем нового пользователя
         const newUser = {
           client_name,
           client_email,
@@ -25,45 +42,47 @@ function Authorization() {
           client_address,
           client_birthday
         };
-  
-        // Проверяем, что пользователя с таким email нет в базе данных
-        const checkUserResponse = await axios.get('https://localhost:7256/Clients');
-        const existingUser = checkUserResponse.data.find((user) => user.client_email === client_email);
-  
-        if (existingUser) {
-          setError('User with this email already exists');
-          return;
-        }
-  
-        // Регистрируем нового пользователя
         const registrationResponse = await axios.post('https://localhost:7256/Clients', newUser);
-  
-        // Проверяем, что регистрация выполнена успешно
+
         if (registrationResponse.status === 200) {
-          // Регистрация успешно выполнена, выполните необходимые действия, например, перенаправление на страницу профиля
-          window.location.href = '/profile';
+          setUserData(newUser);
+          const userId = registrationResponse.data.client_id;
+          localStorage.setItem('userData', JSON.stringify(newUser));
+          fetchUserData(userId);
         } else {
           setError('Registration failed');
         }
       } else {
-        // Логин
         const response = await axios.get('https://localhost:7256/Clients');
-  
-        // Ищем пользователя с указанным email и паролем
-        const user = response.data.find((user) => user.client_email === client_email && user.client_password === client_password);
-  
+
+        const user = response.data.find(
+          (user) => user.client_email === client_email && user.client_password === client_password
+        );
+        
         if (user) {
-          // Пользователь существует и пароль верен, выполните необходимые действия, например, перенаправление на страницу профиля
-          window.location.href = '/profile';
+          setUserData(user);
+          const userId = user.client_id;
+          localStorage.setItem('userData', JSON.stringify(user));
+          fetchUserData(userId);
         } else {
           setError('Invalid email or password');
         }
       }
     } catch (error) {
-      console.log(error); // Выводим ошибку в консоль для отладки
+      console.log(error);
       setError('An error occurred');
     }
   };
+
+  const handleLogout = () => {
+    setUserData(null);
+    localStorage.removeItem('userData');
+    window.location.reload();
+  };
+
+  if (userData !== null && userData !== undefined) {
+    return <Profile userData={userData} handleLogout={handleLogout} />;
+  }
 
   return (
     <div className={styles.authorization_page}>

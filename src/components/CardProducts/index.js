@@ -17,13 +17,11 @@ function CardProducts({product_id, product_name, product_count, product_price, p
                 product_name, 
                 product_price, 
                 product_size, 
-                product_image, 
-                //favorite: true
+                product_image
             });
         } else {
             onRemove(product_id);
         }
-        //axios.put(`https://localhost:7256/Products/${product_id}`, {favorite: updatedFavorite})
     };
 
     const handleQuantityChange = (newQuantity) => {
@@ -47,7 +45,6 @@ function CardProducts({product_id, product_name, product_count, product_price, p
                 const existingItem = cartItems.find(item => Number(item.product_id) === Number(product_id) && item.product_size === newItem.product_size);
 
                 if (existingItem) {
-                // If item already exists in cart with the same size, increase the quantity of the existing item
                 const updatedItem = {
                     ...existingItem,
                     product_count: existingItem.product_count + quantity
@@ -55,7 +52,6 @@ function CardProducts({product_id, product_name, product_count, product_price, p
 
                 axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/cart/${existingItem.product_id}`, updatedItem);
                 } else {
-                // If item is not in cart or has a different size, add new item to cart
                 axios.post('https://647b1df4d2e5b6101db0e241.mockapi.io/cart', newItem);
                 }
             });
