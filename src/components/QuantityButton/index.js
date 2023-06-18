@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './QuantityButton.module.scss';
 
-function QuantityButton({ onQuantityChange }) {
-  const [quantity, setQuantity] = useState(0);
+function QuantityButton({ quantity, setQuantity, onQuantityChange }) {
 
   const handleDecrease = () => {
-    if (quantity > 0) {
+    if (quantity > 1) {
       setQuantity(quantity - 1);
       onQuantityChange(quantity - 1);
     }

@@ -36,16 +36,20 @@ function CardFavorites({product_id, product_name, product_price, product_size, p
                 const existingItem = cartItems.find(item => item.product_id === product_id && item.product_size === newItem.product_size);
 
                 if (existingItem) {
-                // If item already exists in cart with the same size, increase the quantity of the existing item
-                const updatedItem = {
-                    ...existingItem,
-                    product_count: existingItem.product_count + quantity
-                };
+                    const updatedItem = {
+                        ...existingItem,
+                        product_count: existingItem.product_count + quantity
+                    };
 
-                axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/cart/${existingItem.id}`, updatedItem);
+                    axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/cart/${existingItem.id}`, updatedItem);
                 } else {
-                // If item is not in cart or has a different size, add new item to cart
-                axios.post('https://647b1df4d2e5b6101db0e241.mockapi.io/cart', newItem);
+                    axios.post("https://647b1df4d2e5b6101db0e241.mockapi.io/cart", newItem)
+                    .then((response) => {
+                      window.dispatchEvent(new Event('cartUpdate'));
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
                 }
             });
           

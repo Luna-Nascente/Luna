@@ -6,6 +6,7 @@ function CardCart({key, product_id, product_name, product_image, product_size, p
     const handleDeleteClick = () => {
         axios.delete(`https://647b1df4d2e5b6101db0e241.mockapi.io/cart/${product_id}`)
           .then(response => {
+            window.dispatchEvent(new Event('cartUpdate'));
             console.log('Item successfully deleted', response.data);
             onItemDelete(product_id); // вызываем функцию onItemDelete, передавая ей id удаленного элемента
           })

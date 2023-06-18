@@ -52,7 +52,13 @@ function CardProducts({product_id, product_name, product_count, product_price, p
 
                 axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/cart/${existingItem.product_id}`, updatedItem);
                 } else {
-                axios.post('https://647b1df4d2e5b6101db0e241.mockapi.io/cart', newItem);
+                    axios.post("https://647b1df4d2e5b6101db0e241.mockapi.io/cart", newItem)
+                    .then((response) => {
+                      window.dispatchEvent(new Event('cartUpdate'));
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
                 }
             });
           
@@ -92,9 +98,9 @@ function CardProducts({product_id, product_name, product_count, product_price, p
                         </div>
                         <div className={styles.flexWrapper}>
                             <div>
-                                <QuantityButton onQuantityChange={handleQuantityChange} />
+                                <QuantityButton quantity={quantity} setQuantity={setQuantity} onQuantityChange={handleQuantityChange} />
                                 <button className={styles.buyButton} onClick={handleAddToCart}>
-                                    {quantity > 1 ? <span className={styles.quantity}>add to cart: {quantity}</span> : <p className={styles.addToCart}>add to cart</p>}
+                                    {quantity > 0 ? <span className={styles.quantity}>add to cart: {quantity}</span> : <p className={styles.addToCart}>add to cart</p>}
                                 </button>
                             </div>
                             <img 
