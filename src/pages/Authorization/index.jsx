@@ -20,14 +20,8 @@ function Authorization() {
     }
   }, []);
 
-  const fetchUserData = async (userId) => {
-    try {
-      const response = await axios.get(`https://localhost:7256/Clients?id=${userId}`);
-      setUserData(response.data);
-    } catch (error) {
-      console.log(error);
-      setError('Failed to fetch user data');
-    }
+  const handleProfileUpdate = newData => {
+    setUserData(newData);
   };
 
   const handleAuthSubmit = async (e) => {
@@ -45,10 +39,8 @@ function Authorization() {
         const registrationResponse = await axios.post('https://localhost:7256/Clients', newUser);
 
         if (registrationResponse.status === 200) {
-          setUserData(newUser);
-          const userId = registrationResponse.data.client_id;
           localStorage.setItem('userData', JSON.stringify(newUser));
-          fetchUserData(userId);
+          setUserData(newUser);
         } else {
           setError('Registration failed');
         }
@@ -60,10 +52,8 @@ function Authorization() {
         );
         
         if (user) {
-          setUserData(user);
-          const userId = user.client_id;
           localStorage.setItem('userData', JSON.stringify(user));
-          fetchUserData(userId);
+          setUserData(user);
         } else {
           setError('Invalid email or password');
         }
@@ -81,7 +71,7 @@ function Authorization() {
   };
 
   if (userData !== null && userData !== undefined) {
-    return <Profile userData={userData} handleLogout={handleLogout} />;
+    return <Profile userData={userData} handleLogout={handleLogout} handleProfileUpdate={handleProfileUpdate} />;
   }
 
   return (
@@ -140,7 +130,7 @@ function Authorization() {
               <input
                 type="date"
                 id="dob"
-                value={client_birthday}
+                value={new Date(client_birthday).toISOString().slice(0, 10)}
                 onChange={(e) => setDob(e.target.value)}
               />
             </div>

@@ -1,26 +1,56 @@
-import React from 'react';
+//Данная функция прописана, однако нет возможности её реализовать.
+//TODO: Необходимо добавить функцию PUT на сервер
+
+import React, { useState } from 'react';
+import axios from 'axios';
 import styles from './EditProfile.module.scss';
 
-const EditProfile = ({fullName, birthday, address, email}) => {
+const EditProfile = ({ client_id, client_name, client_birthday, client_address, client_email, handleSubmit }) => {
+  const [name, setName] = useState(client_name);
+  const [birthday, setBirthday] = useState(client_birthday);
+  const [address, setAddress] = useState(client_address);
+  const [email, setEmail] = useState(client_email);
+
+  const handleSubmitClick = async () => {
+    const newData = {
+      client_id: client_id,
+      client_name: name,
+      client_birthday: new Date(birthday).toISOString().slice(0, 10),
+      client_address: address,
+      client_email: email,
+    };
+    try {
+      await axios.put(`https://localhost:7256/Clients/${client_id}`, newData); // отправка запроса на сервер
+      alert('Профиль успешно обновлен');
+    } catch (error) {
+      console.error(error);
+      alert('Ошибка при обновлении профиля');
+    }
+  };
+
   return (
     <div className={styles.edit}>
-      <form>
-        <label htmlFor="full-name">Full Name:</label>
-        <input type="text" id="full-name" name="full-name" defaultValue={fullName} />
-
+      <h3>Edit Profile</h3>
+      <div className={styles.field}>
+        <label htmlFor="name">Name:</label>
+        <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} />
+      </div>
+      <div className={styles.field}>
         <label htmlFor="birthday">Birthday:</label>
-        <input type="date" id="birthday" name="birthday" defaultValue={birthday} />
-
+        <input type="date" id="birthday" value={birthday} onChange={e => setBirthday(e.target.value)} />
+      </div>
+      <div className={styles.field}>
         <label htmlFor="address">Address:</label>
-        <textarea id="address" name="address" defaultValue={address} />
-
+        <input type="text" id="address" value={address} onChange={e => setAddress(e.target.value)} />
+      </div>
+      <div className={styles.field}>
         <label htmlFor="email">Email:</label>
-        <input type="email" id="email" name="email" defaultValue={email} />
-
-        <button type="submit">Save</button>
-      </form>
+        <input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} />
+      </div>
+      <button type='submit' className={styles.button} onClick={handleSubmitClick}>Save Changes</button>
     </div>
   );
 };
 
 export default EditProfile;
+

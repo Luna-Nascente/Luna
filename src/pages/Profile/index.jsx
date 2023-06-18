@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import EditProfile from '../../components/EditProfile';
+//import EditProfile from '../../components/EditProfile';
 import styles from './Profile.module.scss';
 
-//client_name, client_birthday, client_address, client_email
-const UserProfile = ({ userData, handleLogout  }) => {
-  const [editMode, setEditMode] = useState(false);
-  
-  const handleEditClick = () => {
-    setEditMode(true);
-  };
+const UserProfile = ({ userData, handleLogout, handleProfileUpdate }) => {
+  //const [editMode, setEditMode] = useState(false);
+  const [profileData, setProfileData] = useState(userData);
+
+  useEffect(() => {
+    setProfileData(userData); // обновляем состояние profileData при изменении userData
+  }, [userData]);
+
+  //Возможное редактирование профиля. На сервере отсутствует функция PUT => оставлю до лучших времён
+  // const handleEditClick = () => {
+  //   setEditMode(true);
+  // };
+
+  // const handleSubmit = newData => {
+  //   setProfileData(newData);
+  //   handleProfileUpdate(newData);
+  //   setEditMode(false);
+  // };
 
   return (
     <div className={styles.user}>
@@ -17,7 +28,7 @@ const UserProfile = ({ userData, handleLogout  }) => {
         <div className={styles.profile_header}>
           <h1>User Profile</h1>
           <Link to="/authorization">
-            <button className={styles.logout_button} onClick={handleLogout}>
+            <button className={styles.edit_button} onClick={handleLogout}>
               Logout
             </button>
           </Link>
@@ -27,18 +38,25 @@ const UserProfile = ({ userData, handleLogout  }) => {
             <img src="https://via.placeholder.com/150" alt="Profile" />
           </div>
           <div className={styles.profile_details}>
-            <h2>{userData.client_name}</h2>
-            <p className={styles.detail}>Email: {userData.client_email}</p>
-            <p className={styles.detail}>Address: {userData.client_address}</p>
-            <p className={styles.detail}>Birthday: {userData.client_birthday}</p>
+            <h2>{profileData.client_name}</h2>
+            <p className={styles.detail}>Email: {profileData.client_email}</p>
+            <p className={styles.detail}>Address: {profileData.client_address}</p>
+            <p className={styles.detail}>Birthday: {new Date(profileData.client_birthday).toISOString().slice(0, 10)}</p>
 
-            {editMode ? (
-              <EditProfile client_name={userData.client_name} client_birthday={userData.client_birthday} client_address={userData.client_address} client_email={userData.client_email} />
+            {/* {editMode ? (
+              <EditProfile
+                client_id={profileData.client_id}
+                client_name={profileData.client_name}
+                client_birthday={new Date(profileData.client_birthday).toISOString().slice(0, 10)}
+                client_address={profileData.client_address}
+                client_email={profileData.client_email}
+                handleSubmit={handleSubmit}
+              />
             ) : (
               <button className={styles.edit_button} onClick={handleEditClick}>
                 Edit Profile
               </button>
-            )}
+            )} */}
           </div>
         </div>
       </div>
