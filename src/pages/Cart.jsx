@@ -7,18 +7,41 @@ function Cart() {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    axios.get('https://647b1df4d2e5b6101db0e241.mockapi.io/cart')
-      .then((response) => setCartItems(response.data))
-      .catch((error) => console.log(error));
+    const fetchCartItems = async () => {
+      try {
+        const response = await axios.get('https://localhost:7256/Shopping_cart');
+        const items = response.data;
+        const productRequests = items.map(item =>
+          axios.get(`https://localhost:7256/Products?product_id=${item.product_idf}`)
+        );
+        const productResponses = await Promise.all(productRequests);
+        const updatedItems = items.map((item, index) => ({
+          ...item,
+          product_name: productResponses[index].data[item.product_idf-1].product_name,
+          product_price: productResponses[index].data[item.product_idf-1].product_price,
+          product_image: productResponses[index].data[item.product_idf-1].product_image,
+          shopping_cart_id: item.shopping_cart_id,
+          product_idf: item.product_idf,
+          product_size: item.product_size
+        }));
+        
+        setCartItems(updatedItems);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCartItems();
   }, []);
 
   const handleItemDelete = (product_id) => {
-    const updatedCartItems = cartItems.map(item =>
-      item.product_id === product_id
-        ? { ...item, product_count: item.product_count - item.product_count }
-        : item
-    ).filter(item => item.product_count > 0);
-    setCartItems(updatedCartItems);
+    setCartItems(prevCartItems => {
+      const updatedCartItems = prevCartItems.map(item =>
+        item.shopping_cart_id === product_id
+          ? { ...item, product_count: item.product_count - item.product_count }
+          : item
+      ).filter(item => item.product_count > 0);
+      return updatedCartItems;
+    });
   };
 
   // Calculate total price
@@ -37,18 +60,17 @@ function Cart() {
         <div>
           {cartItems.map((item) => (
             <CardCart
-              key={item.product_id}
-              product_id={item.product_id}
-              product_name={item.product_name} 
-              product_size={item.product_size}
+              key={item.shopping_cart_id}
+              shopping_cart_id={item.shopping_cart_id}
+              product_idf={item.product_idf}
               product_count={item.product_count}
-              product_price={item.product_price} 
-              total={(item.product_price * item.product_count)}
-              product_image={item.product_image}
-              cartItems={cartItems} 
               onItemDelete={handleItemDelete}
-              favorite={item.favorite}
-            />
+              product_name={item.product_name}
+              product_size={item.product_size}
+              product_price={item.product_price}
+              product_image={item.product_image}
+              total={item.product_price * item.product_count}
+          />
           ))}
 
           <div className="totalPriceCount d-flex">

@@ -21,7 +21,7 @@ function Header() {
   React.useEffect(() => {
     const updateCartItemCount = () => {
       axios
-        .get("https://647b1df4d2e5b6101db0e241.mockapi.io/cart")
+        .get("https://localhost:7256/Shopping_cart")
         .then((response) => {
           setCountOfGoods(response.data.length);
         })

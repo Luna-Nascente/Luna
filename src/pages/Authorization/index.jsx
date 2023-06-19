@@ -130,7 +130,7 @@ function Authorization() {
               <input
                 type="date"
                 id="dob"
-                value={new Date(client_birthday).toISOString().slice(0, 10)}
+                value={client_birthday ? new Date(client_birthday).toISOString().slice(0, 10) : ''}
                 onChange={(e) => setDob(e.target.value)}
               />
             </div>

@@ -3,10 +3,10 @@ import axios from 'axios';
 import styles from './CardProducts.module.scss'
 import QuantityButton from '../QuantityButton';
 
-function CardProducts({product_id, product_name, product_count, product_price, product_size, product_image, onFavorite, onClickBuy, favorite, onRemove}){
+function CardProducts({product_id, product_name, product_price, product_size, product_image, onFavorite, onRemove}){
     const [quantity, setQuantity] = React.useState(1);  //кол-во взять из бд, и перенести в родительский файл
     const [isFavorite, setIsFavorite] = React.useState(false);
-    const [selectedSize, setSelectedSize] = React.useState('S(44)');
+    const [selectedSize, setSelectedSize] = React.useState(44);
 
     const onClickFavorite = () => {
         const updatedFavorite = !isFavorite;
@@ -30,36 +30,36 @@ function CardProducts({product_id, product_name, product_count, product_price, p
   
     const onAddToCart = () => {
         if (quantity > 0) {
-          const newItem = {
-            product_id: product_id,
-            product_name: product_name,
-            product_size: selectedSize,
-            product_price: product_price,
-            product_count: quantity,
-            product_image: product_image
-          };
-          
-          axios.get('https://647b1df4d2e5b6101db0e241.mockapi.io/cart')
+          axios.get('https://localhost:7256/Shopping_cart')
             .then(response => {
-                const cartItems = response.data;
-                const existingItem = cartItems.find(item => Number(item.product_id) === Number(product_id) && item.product_size === newItem.product_size);
+                // const cartItems = response.data;
+                // const existingItem = cartItems.find(
+                //     item => item.product_idf === product_id 
+                //     && item.product_size === selectedSize);
 
-                if (existingItem) {
-                const updatedItem = {
-                    ...existingItem,
-                    product_count: existingItem.product_count + quantity
-                };
-
-                axios.put(`https://647b1df4d2e5b6101db0e241.mockapi.io/cart/${existingItem.product_id}`, updatedItem);
-                } else {
-                    axios.post("https://647b1df4d2e5b6101db0e241.mockapi.io/cart", newItem)
-                    .then((response) => {
-                      window.dispatchEvent(new Event('cartUpdate'));
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                    });
-                }
+                // if (existingItem) {
+                //     const updatedItem = {
+                //         ...existingItem,
+                //         product_count: existingItem.product_count + quantity
+                //     };
+                    
+                //     axios.put(`https://localhost:7256/Shopping_cart/${existingItem.shopping_cart_id}`, updatedItem);
+                // } else {
+                    const newItem = {
+                        client_emailf: 1,
+                        product_idf: product_id,
+                        product_size: selectedSize,
+                        product_count: quantity
+                      };
+                      
+                      axios.post("https://localhost:7256/Shopping_cart", newItem)
+                      .then((response) => {
+                        window.dispatchEvent(new Event('cartUpdate'));
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                // }
             });
           
           setQuantity(1);
@@ -88,12 +88,12 @@ function CardProducts({product_id, product_name, product_count, product_price, p
                     <div className={styles.info}>
                         <div className="d-flex justify-between">
                             <p className={styles.price}> {new Intl.NumberFormat('ru-RU').format(product_price)} ₽</p>
-                                <select className={styles.size} onChange={(event) => setSelectedSize(event.target.value)}>
-                                    <option>S(44)</option>
-                                    <option>M(46)</option>
-                                    <option>L(48)</option>
-                                    <option>XL(50)</option>
-                                    <option>XXL(52)</option>
+                                <select className={styles.size} value={selectedSize} onChange={(event) => setSelectedSize(event.target.value)}>
+                                    <option value="44">S(44)</option>
+                                    <option value="46">M(46)</option>
+                                    <option value="48">L(48)</option>
+                                    <option value="50">XL(50)</option>
+                                    <option value="52">XXL(52)</option>
                                 </select>
                         </div>
                         <div className={styles.flexWrapper}>

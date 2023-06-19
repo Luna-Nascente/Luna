@@ -23,7 +23,7 @@ function Products() {
               }).filter(
                 product => (selectedFilter 
                     ? product.category_of_product === selectedFilter 
-                    : true) && product.product_size === 44);
+                    : true) && product);
               setProducts(filteredProducts);
             });
           });
@@ -65,13 +65,11 @@ function Products() {
                         product_id={item.product_id}
                         product_name={item.product_name} 
                         product_size={item.product_size}
-                        product_count={item.product_count}
                         product_price={item.product_price} 
                         product_image={item.product_image}
                         onFavorite={(obj) => onAddToFavorite(obj)}
                         onClickBuy={() => console.log("Click on buy!")}
                         onRemove={() => onRemoveFavorite(item.product_id)}
-                        favorite={item.favorite}
                     /> 
                 ))}
             </div>
