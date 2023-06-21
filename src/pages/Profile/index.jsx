@@ -34,9 +34,10 @@ const UserProfile = ({ userData, handleLogout, handleProfileUpdate }) => {
           </Link>
         </div>
         <div className={styles.profile_body}>
-          <div className={styles.profile_image}>
+          {/* <div className={styles.profile_image}>
             <img src="https://via.placeholder.com/150" alt="Profile" />
-          </div>
+          </div> */ // Тут должна быть аватарка, но с нынешней базой данных реализовать невозможно
+          } 
           <div className={styles.profile_details}>
             <h2>{profileData.client_name}</h2>
             <p className={styles.detail}>Email: {profileData.client_email}</p>

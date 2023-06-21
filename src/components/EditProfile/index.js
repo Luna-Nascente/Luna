@@ -14,12 +14,17 @@ const EditProfile = ({ client_id, client_name, client_birthday, client_address, 
   const handleSubmitClick = async () => {
     const newData = {
       client_id: client_id,
-      client_name: name,
-      client_birthday: new Date(birthday).toISOString().slice(0, 10),
-      client_address: address,
-      client_email: email,
+      client_name: client_name,
+      client_birthday: new Date(client_birthday).toISOString().slice(0, 10),
+      client_address: client_address,
+      client_email: client_email,
     };
     try {
+      console.log(client_id);
+      console.log(name);
+      console.log(new Date(birthday).toISOString().slice(0, 10));
+      console.log(address);
+      console.log(email);
       await axios.put(`https://localhost:7256/Clients/${client_id}`, newData); // отправка запроса на сервер
       alert('Профиль успешно обновлен');
     } catch (error) {

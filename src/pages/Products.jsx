@@ -27,25 +27,12 @@ function Products() {
               setProducts(filteredProducts);
             });
           });
-      
-        axios.get('https://647b1df4d2e5b6101db0e241.mockapi.io/favorites').then(res =>  {
-          setFavoriteItems(res.data);
-        });
     }, [selectedFilter]);
 
-    const onAddToFavorite = (obj) => {
-        console.log(obj);
-        if (favoriteItems.find((item) => Number(item.product_id) === Number(obj.product_id))) {
-            setFavoriteItems((prev) => prev.filter((item) => Number(item.product_id) !== Number(obj.product_id)))
-        } else {
-            axios.post('https://647b1df4d2e5b6101db0e241.mockapi.io/favorites', obj);
-            setFavoriteItems((prev) => [...prev, obj]);
-        }
-    };
-    const onRemoveFavorite = (product_id) => {
-        axios.delete(`https://647b1df4d2e5b6101db0e241.mockapi.io/favorites/${product_id}`);
-        setFavoriteItems((prev) => prev.filter((item) => item.product_id !== product_id));
-    };
+    const handleRemoveFavoriteItem = (id) => {
+        const newFavoriteItems = favoriteItems.filter(item => item.favorite.favorites_id !== id);
+        setFavoriteItems(newFavoriteItems);
+    }
 
     return (
         <div>
@@ -59,17 +46,16 @@ function Products() {
                 <p className={"cu-p"} onClick={clearFilters}>clear</p>
             </div>
             <div className="d-flex flex-wrap justify-between">
-                {products.map((item) => (
+                {products.map((item, index) => (
                     <CardProducts 
-                        key={item.product_id}
+                        key={index}
                         product_id={item.product_id}
-                        product_name={item.product_name} 
-                        product_size={item.product_size}
+                        product_name={item.product_name}
                         product_price={item.product_price} 
                         product_image={item.product_image}
-                        onFavorite={(obj) => onAddToFavorite(obj)}
-                        onClickBuy={() => console.log("Click on buy!")}
-                        onRemove={() => onRemoveFavorite(item.product_id)}
+                        favoriteItems = {favoriteItems}
+                        setFavoriteItems = {setFavoriteItems}
+                        handleRemoveFavoriteItem = {handleRemoveFavoriteItem}
                     /> 
                 ))}
             </div>

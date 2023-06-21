@@ -1,26 +1,60 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './CardProducts.module.scss'
 import QuantityButton from '../QuantityButton';
 
-function CardProducts({product_id, product_name, product_price, product_size, product_image, onFavorite, onRemove}){
-    const [quantity, setQuantity] = React.useState(1);  //кол-во взять из бд, и перенести в родительский файл
-    const [isFavorite, setIsFavorite] = React.useState(false);
-    const [selectedSize, setSelectedSize] = React.useState(44);
+function CardProducts({favorites_id, product_id, product_name, product_price, product_image, favoriteItems, setFavoriteItems, handleRemoveFavoriteItem}){
+    
+    const [quantity, setQuantity] = useState(1);
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [selectedSize, setSelectedSize] = useState(44)
+
+    console.log(favorites_id);
+
+    useEffect(() => {
+        axios
+        .get('https://localhost:7256/Favorite')
+        .then((response) => {
+            const favorites = response.data;
+            const isProductFavorite = favorites.some(
+            (favoriteItem) => favoriteItem.product_idf === product_id
+            );
+            setIsFavorite(isProductFavorite);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }, [product_id]);
+
+    const onAddToFavorite = () => {
+        axios.post('https://localhost:7256/Favorite', { client_idf: 1, product_idf: product_id })
+          .then(res => {
+            setIsFavorite(true);
+            setFavoriteItems([...favoriteItems, res.data]);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    };
+    
+    const handleRemoveFavorite = async () => {
+        try {
+        await axios.delete(`https://localhost:7256/Favorite/${favorites_id}`);
+        handleRemoveFavoriteItem(favorites_id);
+        } catch (error) {
+        console.log(error);
+        }
+    };
 
     const onClickFavorite = () => {
         const updatedFavorite = !isFavorite;
         setIsFavorite(updatedFavorite);
         if (updatedFavorite) {
-            onFavorite({
-                product_id: product_id, 
-                product_name, 
-                product_price, 
-                product_size, 
-                product_image
-            });
+        onAddToFavorite(product_id);
+        setIsFavorite(true);
         } else {
-            onRemove(product_id);
+        handleRemoveFavorite(product_id);
+        setIsFavorite(false);
         }
     };
 
