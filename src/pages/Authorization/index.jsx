@@ -20,22 +20,31 @@ function Authorization() {
     }
   }, []);
 
-  const handleProfileUpdate = newData => {
-    setUserData(newData);
-  };
-
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
 
     try {
       if (!isLogin) {
         const newUser = {
-          client_name,
-          client_email,
           client_password,
-          client_address,
-          client_birthday
+          client_name: client_name,
+          client_address: client_address,
+          client_email: client_email,
+          client_birthday: new Date(client_birthday).toISOString().slice(0, 10),
         };
+
+      // Получаем список всех пользователей
+      const response = await axios.get('https://localhost:7256/Clients');
+      const users = response.data;
+
+      // Проверяем наличие пользователя с таким же email
+      const userExists = users.some((user) => user.client_email === newUser.client_email);
+
+      if (userExists) {
+        setError('User with this email already exists');
+        return;
+      }
+
         const registrationResponse = await axios.post('https://localhost:7256/Clients', newUser);
 
         if (registrationResponse.status === 200) {
@@ -71,7 +80,10 @@ function Authorization() {
   };
 
   if (userData !== null && userData !== undefined) {
-    return <Profile userData={userData} handleLogout={handleLogout} handleProfileUpdate={handleProfileUpdate} />;
+    return <Profile 
+      userData={userData} 
+      handleLogout={handleLogout}
+    />;
   }
 
   return (

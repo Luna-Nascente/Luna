@@ -1,32 +1,31 @@
-//Данная функция прописана, однако нет возможности её реализовать.
-//TODO: Необходимо добавить функцию PUT на сервер
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './EditProfile.module.scss';
 
-const EditProfile = ({ client_id, client_name, client_birthday, client_address, client_email, handleSubmit }) => {
+const EditProfile = ({ client_id, client_name, client_password, client_birthday, client_address, client_email, fetchProfileData, setEditMode }) => {
   const [name, setName] = useState(client_name);
   const [birthday, setBirthday] = useState(client_birthday);
   const [address, setAddress] = useState(client_address);
-  const [email, setEmail] = useState(client_email);
+  //const [email, setEmail] = useState(client_email);
 
   const handleSubmitClick = async () => {
     const newData = {
       client_id: client_id,
-      client_name: client_name,
-      client_birthday: new Date(client_birthday).toISOString().slice(0, 10),
-      client_address: client_address,
-      client_email: client_email,
+      client_name: name,
+      client_birthday: isNaN(new Date(birthday)) ? '-' : new Date(birthday).toISOString().slice(0, 10),
+      client_address: address,
+      client_email,
+      client_password: client_password
     };
     try {
       console.log(client_id);
       console.log(name);
-      console.log(new Date(birthday).toISOString().slice(0, 10));
+      console.log(isNaN(new Date(birthday)) ? '-' : new Date(birthday).toISOString().slice(0, 10));
       console.log(address);
-      console.log(email);
       await axios.put(`https://localhost:7256/Clients/${client_id}`, newData); // отправка запроса на сервер
       alert('Профиль успешно обновлен');
+      fetchProfileData();
+      setEditMode(false);
     } catch (error) {
       console.error(error);
       alert('Ошибка при обновлении профиля');
@@ -48,10 +47,10 @@ const EditProfile = ({ client_id, client_name, client_birthday, client_address, 
         <label htmlFor="address">Address:</label>
         <input type="text" id="address" value={address} onChange={e => setAddress(e.target.value)} />
       </div>
-      <div className={styles.field}>
+      {/* <div className={styles.field}>
         <label htmlFor="email">Email:</label>
         <input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} />
-      </div>
+      </div> */}
       <button type='submit' className={styles.button} onClick={handleSubmitClick}>Save Changes</button>
     </div>
   );
